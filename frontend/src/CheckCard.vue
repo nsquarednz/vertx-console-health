@@ -6,7 +6,7 @@
                     <div class="check-id">{{ statusCheck.id }}</div>
                     <div class="check-status">{{ statusCheck.status }}</div>
                 </div>
-                {{ statusCheck.uptimeRatio }}
+                <pf-donut-util :data="circleData" centerLabelType="percent"></pf-donut-util>
             </div>
         </div>
     </div>
@@ -26,6 +26,13 @@ export default {
             } else {
                 return null;
             }
+        },
+        circleData() {
+            return {
+                total: 100,
+                used: Math.round(this.statusCheck.uptimeRatio * 100),
+                formatFn: () => 'uptime'
+            }
         }
     }
 }
@@ -37,14 +44,18 @@ export default {
     transition: background-color 2s;
     color: #fff;
     border: none;
-}
+    
+    & /deep/ .c3-chart-arcs-title {
+        fill: #fff;
+    }
 
-.check-card-up {
-    background-color: #3f9c35;
-}
+    &.check-card-up {
+        background-color: #3f9c35;
+    }
 
-.check-card-down {
-    background-color: #c00;
+    &.check-card-down {
+        background-color: #c00;
+    }
 }
 
 .check-card-header {

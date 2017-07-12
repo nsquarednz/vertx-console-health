@@ -150,7 +150,7 @@ export default {
                 }
             });
         updateStatuses();
-        this.updateTask = setInterval(updateStatuses, 1000);
+        this.updateTask = setInterval(updateStatuses, 50000);
         this.sortOptions = [STATUS_SORT, NAME_SORT, UPTIME_SORT];
     },
     beforeDestroy() {
