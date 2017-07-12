@@ -2,7 +2,11 @@
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select check-card" :class="checkCardClass">
             <div class="card-pf-body">
-                {{ statusCheck }}
+                <div class="check-card-header">
+                    <div class="check-id">{{ statusCheck.id }}</div>
+                    <div class="check-status">{{ statusCheck.status }}</div>
+                </div>
+                {{ statusCheck.uptimeRatio }}
             </div>
         </div>
     </div>
@@ -28,5 +32,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.check-card-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
 
+.check-status {
+    margin-left: auto;
+}
 </style>
