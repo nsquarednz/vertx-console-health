@@ -1,13 +1,22 @@
 <template>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select check-card" :class="checkCardClass">
             <div class="card-pf-body">
-                <div class="status-view">
+                <div class="status-view" @mouseover="displayOverlay = true" :class="{ 'below-overlay': displayOverlay}">
                     <div class="check-card-header">
                         <div class="check-id">{{ statusCheck.id }}</div>
                         <div class="check-status">{{ statusCheck.status }}</div>
                     </div>
                     <pf-donut-util class="uptime-donut" :data="circleData" centerLabelType="percent" :extraChartOptions="arcOptions"></pf-donut-util>
+                </div>
+                <div class="toggle-overlay" :class="{ shown: displayOverlay }" @mouseleave="displayOverlay = false">
+                    <div class="check-card-header">
+                        <div class="check-id">{{ statusCheck.id }}</div>
+                        <div class="check-status">{{ statusCheck.status }}</div>
+                    </div>
+                    <div class="check-card-data">
+                        {{ statusCheck.data || {} }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -18,6 +27,11 @@
 export default {
     props: {
         statusCheck: Object
+    },
+    data() {
+        return {
+            displayOverlay: false
+        }
     },
     beforeMount() {
         this.arcOptions = {
@@ -51,6 +65,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$card-padding: 10px;
+
 .check-card {
     padding: 0;
     transition: background-color 2s;
@@ -75,7 +91,7 @@ export default {
 
     .card-pf-body {
         background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.15));
-        padding: 10px;
+        padding: $card-padding;
     }
 }
 
@@ -90,6 +106,28 @@ $card-height: 220px;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    transition: all 0.2s;
+}
+
+.below-overlay {
+    opacity: 0.4;
+    filter: blur(3px);
+}
+
+.toggle-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s;
+    top: 0;
+    left: 0;
+    padding: $card-padding;
+    &.shown {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 .check-card-header {
@@ -114,5 +152,9 @@ $card-height: 220px;
     pointer-events: none;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.check-card-data {
+    margin-top: $card-padding;
 }
 </style>
