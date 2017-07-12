@@ -15,7 +15,7 @@
                         <div class="check-status">{{ statusCheck.status }}</div>
                     </div>
                     <div class="check-card-data">
-                        {{ statusCheck.data || {} }}
+                        <code class="json-data" v-html="formattedDataString"></code>
                     </div>
                 </div>
             </div>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import jsonMarkup from 'json-markup';
+
 export default {
     props: {
         statusCheck: Object
@@ -59,6 +61,9 @@ export default {
                 used: Math.round(this.statusCheck.uptimeRatio * 100),
                 formatFn: () => 'uptime'
             }
+        },
+        formattedDataString() {
+            return jsonMarkup(this.statusCheck.data || {});
         }
     }
 }
@@ -156,5 +161,12 @@ $card-height: 220px;
 
 .check-card-data {
     margin-top: $card-padding;
+
+    .json-data {
+        white-space: pre;
+        background: none;
+        padding: 0;
+        color: #fff;
+    }
 }
 </style>
