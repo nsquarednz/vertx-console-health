@@ -2,11 +2,13 @@
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select check-card" :class="checkCardClass">
             <div class="card-pf-body">
-                <div class="check-card-header">
-                    <div class="check-id">{{ statusCheck.id }}</div>
-                    <div class="check-status">{{ statusCheck.status }}</div>
+                <div class="status-view">
+                    <div class="check-card-header">
+                        <div class="check-id">{{ statusCheck.id }}</div>
+                        <div class="check-status">{{ statusCheck.status }}</div>
+                    </div>
+                    <pf-donut-util class="uptime-donut" :data="circleData" centerLabelType="percent" :extraChartOptions="arcOptions"></pf-donut-util>
                 </div>
-                <pf-donut-util class="uptime-donut" :data="circleData" centerLabelType="percent" :extraChartOptions="arcOptions"></pf-donut-util>
             </div>
         </div>
     </div>
@@ -72,17 +74,22 @@ export default {
     }
 
     .card-pf-body {
-        height: 220px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
         background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.15));
         padding: 10px;
     }
+}
+
+$card-height: 220px;
+
+.status-view {
+    height: $card-height;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 .check-card-header {
@@ -106,5 +113,6 @@ export default {
 .uptime-donut {
     pointer-events: none;
     margin-top: auto;
+    margin-bottom: auto;
 }
 </style>
