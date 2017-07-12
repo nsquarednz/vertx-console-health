@@ -1,12 +1,12 @@
 <template>
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
         <div class="card-pf card-pf-view card-pf-view-select card-pf-view-single-select check-card" :class="checkCardClass">
             <div class="card-pf-body">
                 <div class="check-card-header">
                     <div class="check-id">{{ statusCheck.id }}</div>
                     <div class="check-status">{{ statusCheck.status }}</div>
                 </div>
-                <pf-donut-util :data="circleData" centerLabelType="percent"></pf-donut-util>
+                <pf-donut-util class="uptime-donut" :data="circleData" centerLabelType="percent" :extraChartOptions="arcOptions"></pf-donut-util>
             </div>
         </div>
     </div>
@@ -16,6 +16,16 @@
 export default {
     props: {
         statusCheck: Object
+    },
+    beforeMount() {
+        this.arcOptions = {
+            color: {
+                pattern: ['#fff', 'rgba(255,255,255,0.33)']
+            },
+            tooltip: {
+                show: false
+            }
+        };
     },
     computed: {
         checkCardClass() {
@@ -44,9 +54,13 @@ export default {
     transition: background-color 2s;
     color: #fff;
     border: none;
-    
+
     & /deep/ .c3-chart-arcs-title {
         fill: #fff;
+    }
+
+    & /deep/ .c3-chart-arc path {
+        stroke: none;
     }
 
     &.check-card-up {
@@ -56,13 +70,25 @@ export default {
     &.check-card-down {
         background-color: #c00;
     }
+
+    .card-pf-body {
+        height: 220px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background-image: linear-gradient(transparent, rgba(255, 255, 255, 0.15));
+        padding: 10px;
+    }
 }
 
 .check-card-header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    padding: 10px;
 }
 
 .check-id {
@@ -74,5 +100,11 @@ export default {
     margin-left: auto;
     font-weight: bold;
     line-height: 15px;
+    padding-left: 10px;
+}
+
+.uptime-donut {
+    pointer-events: none;
+    margin-top: auto;
 }
 </style>
