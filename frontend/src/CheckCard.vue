@@ -20,9 +20,9 @@ export default {
     computed: {
         checkCardClass() {
             if (this.statusCheck.stateLevel === 0) {
-                return 'status-card-down';
+                return 'check-card-down';
             } else if (this.statusCheck.stateLevel === 1) {
-                return 'status-card-up';
+                return 'check-card-up';
             } else {
                 return null;
             }
@@ -32,13 +32,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.check-card {
+    padding: 0;
+    transition: background-color 2s;
+    color: #fff;
+    border: none;
+}
+
+.check-card-up {
+    background-color: #3f9c35;
+}
+
+.check-card-down {
+    background-color: #c00;
+}
+
 .check-card-header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    padding: 10px;
+}
+
+.check-id {
+    font-size: 15px;
+    line-height: 15px;
 }
 
 .check-status {
     margin-left: auto;
+    font-weight: bold;
+    line-height: 15px;
 }
 </style>
