@@ -54,7 +54,7 @@ module.exports = {
         target: 'http://localhost:5000',
         secure: false
       },
-      '/admin/health/status': {
+      '/admin/healthchecks': {
         target: 'http://localhost:5000',
         secure: false
       }
