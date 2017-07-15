@@ -4,6 +4,7 @@
 
 <template>
     <div class="container-fluid status-container">
+        <pre v-html="JSON.stringify(healthChecks, null, 4)"></pre>
     </div>
 </template>
 
@@ -24,9 +25,22 @@ export default {
                     throw 'Failed to retrieve health checks: ' + errResponse.statusText
                 }
             })
-            .then(
-                healthJson => console.log(healthJson)
-            );
+            .then(healthJson => {
+                healthJson.id = 'root';
+                healthJson.parent = null;
+
+                function setParentField(parentName, checksArr) {
+                    for (let checkObj of checksArr) {
+                        checkObj.parent = parentName;
+                        if (checkObj.checks) {
+                            setParentField(checkObj.id, checkObj.checks);
+                        }
+                    }
+                }
+
+                setParentField(healthJson.id, healthJson.checks);
+                this.healthChecks = healthJson;
+            });
         updateStatuses();
         this.updateTask = setInterval(updateStatuses, 1000);
     },
