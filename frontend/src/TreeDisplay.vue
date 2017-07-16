@@ -15,6 +15,7 @@
     .node circle {
         stroke-width: 1px;
         filter: url(#shadow);
+        cursor: pointer;
     }
 
     .link {
@@ -129,7 +130,8 @@ export default {
             nodeEnter.append("circle")
                 .attr("r", 10)
                 .style("fill", d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)')
-                .style("stroke", d => d.status === 'UP' ? greenStroke : redStroke);
+                .style("stroke", d => d.status === 'UP' ? greenStroke : redStroke)
+                .on("click", d => console.log(d));
             nodeEnter.append("text")
                 .attr("x", d => d.children ? -16 : 16)
                 .attr("dy", ".35em")
