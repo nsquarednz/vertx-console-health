@@ -61,21 +61,10 @@ export default {
             })
             .then(healthJson => {
                 healthJson.id = 'root';
-
-                function setParentField(parentName, node) {
-                    node.parent = parentName;
-                    if (node.checks) {
-                        for (let checkObj of node.checks) {
-                            setParentField(node.id, checkObj);
-                        }
-                    }
-                }
-
-                setParentField(null, healthJson);
                 this.healthChecks = healthJson;
             });
         updateStatuses();
-        this.updateTask = setInterval(updateStatuses, 1000);
+        this.updateTask = setInterval(updateStatuses, 100000);
     },
     beforeDestroy() {
         clearInterval(this.updateTask);

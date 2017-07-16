@@ -7,9 +7,6 @@
 .tree-container /deep/ svg {
     width: 100%;
     height: 100%;
-    stroke-width: 0px;
-    background-color: blue;
-
 }
 </style>
 
@@ -23,15 +20,16 @@ export default {
     directives: {
         resize
     },
-    mounted() {
-        this.$nextTick(this.drawTree);
+    watch: {
+        treeData(val) {
+            this.drawTree();
+        }
     },
     methods: {
         drawTree() {
             const container = this.$el;
             const sel = d3.select(container);
             const width = container.clientWidth, height = container.clientHeight;
-            console.log(width + ',' + height)
 
             const tree = d3.layout.tree().size([height, width]);
             const diagonal = d3.svg.diagonal().projection(d => [d.y, d.x]);
@@ -43,7 +41,45 @@ export default {
                 treeSvg.selectAll('*').remove();
             }
 
+            const rootElement = Object.assign({}, this.treeData);
+            d3.layout.hierarchy().children(d => d.checks)(rootElement);
 
+            let i = 0;
+            // Compute the new tree layout.
+            var nodes = tree.nodes(rootElement).reverse(),
+                links = tree.links(nodes);
+
+            // Normalize for fixed-depth.
+            nodes.forEach(d => d.y = d.depth * 180);
+
+            // Declare the nodes…
+            var node = treeSvg.selectAll("g.node")
+                .data(nodes, d => d.uid || (d.uid = ++i));
+
+            // Enter the nodes.
+            var nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
+
+            nodeEnter.append("circle")
+                .attr("r", 10)
+                .style("fill", "#fff");
+
+            nodeEnter.append("text")
+                .attr("x", d => d.children || d._children ? -13 : 13)
+                .attr("dy", ".35em")
+                .attr("text-anchor", d =>  d.children || d._children ? "end" : "start")
+                .text(d => d.id)
+                .style("fill-opacity", 1);
+
+            // Declare the links…
+            var link = treeSvg.selectAll("path.link")
+                .data(links, d => d.target.uid);
+
+            // Enter the links.
+            link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", diagonal);
         }
     }
 }
