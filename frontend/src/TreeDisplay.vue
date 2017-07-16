@@ -84,8 +84,8 @@ export default {
             const redStroke = "#8b0000";
             const greenStroke = "#37892f";
 
-            const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 18).attr("height", 18).attr("x", -5);
-            dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 2).attr("flood-opacity", 0.33);
+            const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 16).attr("height", 16).attr("x", -3);
+            dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 1).attr("flood-opacity", 0.3);
 
             const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
