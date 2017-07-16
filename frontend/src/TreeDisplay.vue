@@ -13,10 +13,6 @@
         stroke: steelblue;
         stroke-width: 3px;
     }
-
-    .node text {
-        font: 12px sans-serif;
-    }
 }
 </style>
 
@@ -51,7 +47,7 @@ export default {
                 treeSvg.selectAll('*').remove();
             }
 
-            const rootElement = Object.assign({}, this.treeData);
+            const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
 
             let i = 0;
