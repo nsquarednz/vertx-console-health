@@ -7,6 +7,16 @@
 .tree-container /deep/ svg {
     width: 100%;
     height: 100%;
+
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 3px;
+    }
+
+    .node text {
+        font: 12px sans-serif;
+    }
 }
 </style>
 
@@ -68,7 +78,7 @@ export default {
             nodeEnter.append("text")
                 .attr("x", d => d.children || d._children ? -13 : 13)
                 .attr("dy", ".35em")
-                .attr("text-anchor", d =>  d.children || d._children ? "end" : "start")
+                .attr("text-anchor", d => d.children || d._children ? "end" : "start")
                 .text(d => d.id)
                 .style("fill-opacity", 1);
 
