@@ -3,7 +3,7 @@
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .tree-container /deep/ svg {
     width: 100%;
     height: 100%;
@@ -12,6 +12,12 @@
         fill: #fff;
         stroke: steelblue;
         stroke-width: 3px;
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 2px;
     }
 }
 </style>
