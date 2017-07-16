@@ -57,7 +57,12 @@ export default {
     },
     watch: {
         treeData(val) {
-            const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
+            const dataAsString = JSON.stringify(this.treeData);
+            if (dataAsString === this.lastDataString) {
+                return;
+            }
+            this.lastDataString = dataAsString;
+            const rootElement = Object.assign({}, JSON.parse(dataAsString));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
             this.rootElement = rootElement;
             this.drawTree();
