@@ -4,7 +4,7 @@
 </template>
 
 <style lang="scss">
-.health-tree-container /deep/ svg {
+.health-tree-container svg {
     width: 100%;
     height: 100%;
 
@@ -22,6 +22,26 @@
 
 <script>
 import resize from 'vue-resize-directive';
+
+function setGradientStops(gradient, start, end) {
+    gradient
+        .attr("x1", "0%")
+        .attr("x2", "0%")
+        .attr("y1", "0%")
+        .attr("y2", "100%")
+
+    gradient.append("stop")
+        .attr('class', 'start')
+        .attr("offset", "0%")
+        .attr("stop-color", start)
+        .attr("stop-opacity", 1);
+
+    gradient.append("stop")
+        .attr('class', 'end')
+        .attr("offset", "100%")
+        .attr("stop-color", end)
+        .attr("stop-opacity", 1);
+}
 
 export default {
     props: {
@@ -51,13 +71,17 @@ export default {
                 treeSvg.selectAll('*').remove();
             }
 
+            const defs = treeSvg.append("defs");
+            const redGradient = defs.append("linearGradient").attr("id", "redGradient");
+            setGradientStops(redGradient, "#c00", "#a30000");
+            const greenGradient = defs.append("linearGradient").attr("id", "greenGradient");
+            setGradientStops(greenGradient, "#6ec664", "#3f9c35");
+
             const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
 
             // Styling props
             const leftMargin = 50;
-            const COLOR_RED = "#cc0000";
-            const COLOR_GREEN = "#6ec664";
 
             let i = 0;
             // Compute the new tree layout.
@@ -78,7 +102,7 @@ export default {
 
             nodeEnter.append("circle")
                 .attr("r", 10)
-                .style("fill", d => d.status === 'UP' ? COLOR_GREEN : COLOR_RED);
+                .style("fill", d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)');
 
             nodeEnter.append("text")
                 .attr("x", d => d.children ? -16 : 16)
