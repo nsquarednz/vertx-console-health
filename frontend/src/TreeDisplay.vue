@@ -1,5 +1,5 @@
 <template>
-    <div class="health-tree-container" v-resize:throttle="drawTree">
+    <div class="health-tree-container" v-resize:throttle.200="drawTree">
     </div>
 </template>
 
