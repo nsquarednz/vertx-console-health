@@ -55,8 +55,8 @@ export default {
 
             // Styling props
             const leftMargin = 50;
-            const COLOR_RED = "#f00";
-            const COLOR_GREEN = "#0f0";
+            const COLOR_RED = "#cc0000";
+            const COLOR_GREEN = "#6ec664";
 
             let i = 0;
             // Compute the new tree layout.
@@ -64,7 +64,7 @@ export default {
                 links = tree.links(nodes);
 
             // Normalize for fixed-depth.
-            nodes.forEach(d => d.y = d.depth * 180);
+            nodes.forEach(d => d.y = d.depth * 120);
 
             // Declare the nodes…
             var node = treeSvg.selectAll("g.node")
@@ -80,9 +80,9 @@ export default {
                 .style("fill", d => d.status === 'UP' ? COLOR_GREEN : COLOR_RED);
 
             nodeEnter.append("text")
-                .attr("x", d => d.children || d._children ? -13 : 13)
+                .attr("x", d => d.children ? -13 : 13)
                 .attr("dy", ".35em")
-                .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+                .attr("text-anchor", d => d.children ? "end" : "start")
                 .text(d => d.id)
                 .style("fill-opacity", 1);
 
