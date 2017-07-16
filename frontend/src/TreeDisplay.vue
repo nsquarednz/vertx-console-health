@@ -1,17 +1,14 @@
 <template>
-    <div class="tree-container" v-resize:throttle="drawTree">
+    <div class="health-tree-container" v-resize:throttle="drawTree">
     </div>
 </template>
 
 <style lang="scss">
-.tree-container /deep/ svg {
+.health-tree-container /deep/ svg {
     width: 100%;
     height: 100%;
 
     .node circle {
-        fill: #fff;
-        stroke: steelblue;
-        stroke-width: 3px;
     }
 
     .link {
@@ -56,7 +53,10 @@ export default {
             const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
 
+            // Styling props
             const leftMargin = 50;
+            const COLOR_RED = "#f00";
+            const COLOR_GREEN = "#0f0";
 
             let i = 0;
             // Compute the new tree layout.
@@ -77,13 +77,13 @@ export default {
 
             nodeEnter.append("circle")
                 .attr("r", 10)
-                .style("fill", "#fff");
+                .style("fill", d => d.status === 'UP' ? COLOR_GREEN : COLOR_RED);
 
             nodeEnter.append("text")
                 .attr("x", d => d.children || d._children ? -13 : 13)
                 .attr("dy", ".35em")
                 .attr("text-anchor", d => d.children || d._children ? "end" : "start")
-                .text(d => d.id + ": " + d.status)
+                .text(d => d.id)
                 .style("fill-opacity", 1);
 
             // Declare the links…
