@@ -14,7 +14,7 @@
 
     .node circle {
         stroke-width: 1px;
-        filter:url(#shadow);
+        filter: url(#shadow);
     }
 
     .link {
@@ -57,6 +57,9 @@ export default {
     },
     watch: {
         treeData(val) {
+            const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
+            d3.layout.hierarchy().children(d => d.checks)(rootElement);
+            this.rootElement = rootElement;
             this.drawTree();
         }
     },
@@ -87,15 +90,12 @@ export default {
             const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 16).attr("height", 16).attr("x", -3);
             dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 1).attr("flood-opacity", 0.3);
 
-            const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
-            d3.layout.hierarchy().children(d => d.checks)(rootElement);
-
             // Styling props
             const leftMargin = 50;
 
             let i = 0;
             // Compute the new tree layout.
-            const nodes = tree.nodes(rootElement).reverse(),
+            const nodes = tree.nodes(this.rootElement).reverse(),
                 links = tree.links(nodes);
 
             // Normalize for fixed-depth.
