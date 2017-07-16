@@ -94,23 +94,24 @@ export default {
             const tree = d3.layout.tree().size([height, width]);
             const diagonal = d3.svg.diagonal().projection(d => [d.y, d.x]);
 
-            let treeSvg = sel.select('svg');
-            if (treeSvg.empty()) {
-                treeSvg = sel.attr('preserveAspectRatio', 'none').append('svg').append('g');
-            } else {
-                treeSvg.selectAll('*').remove();
-            }
-
-            const defs = treeSvg.append("defs");
-            const redGradient = defs.append("linearGradient").attr("id", "redGradient");
-            setGradientStops(redGradient, "#c00", "#a30000");
-            const greenGradient = defs.append("linearGradient").attr("id", "greenGradient");
-            setGradientStops(greenGradient, "#6ec664", "#3f9c35");
             const redStroke = "#8b0000";
             const greenStroke = "#37892f";
 
-            const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 16).attr("height", 16).attr("x", -3);
-            dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 1).attr("flood-opacity", 0.3);
+            let treeSvg = sel.select('svg');
+            if (treeSvg.empty()) {
+                treeSvg = sel.attr('preserveAspectRatio', 'none').append('svg');
+
+                const defs = treeSvg.append("defs");
+                const redGradient = defs.append("linearGradient").attr("id", "redGradient");
+                setGradientStops(redGradient, "#c00", "#a30000");
+                const greenGradient = defs.append("linearGradient").attr("id", "greenGradient");
+                setGradientStops(greenGradient, "#6ec664", "#3f9c35");
+
+                const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 16).attr("height", 16).attr("x", -3);
+                dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 1).attr("flood-opacity", 0.3);
+            } else {
+                treeSvg.selectAll('.redraw').remove();
+            }
 
             const leftMargin = 50;
 
@@ -123,7 +124,7 @@ export default {
                 .data(nodes, d => d.uid || (d.uid = ++i));
 
             const nodeEnter = node.enter().append("g")
-                .attr("class", "node")
+                .attr("class", "node redraw")
                 .attr("transform", d => "translate(" + (d.y + leftMargin) + "," + d.x + ")");
             nodeEnter.append("circle")
                 .attr("r", 10)
@@ -139,7 +140,7 @@ export default {
             const link = treeSvg.selectAll("path.link")
                 .data(links, d => d.target.uid);
             link.enter().insert("path", "g")
-                .attr("class", "link")
+                .attr("class", "link redraw")
                 .attr("transform", d => "translate(" + leftMargin + ")")
                 .attr("d", diagonal);
         }
