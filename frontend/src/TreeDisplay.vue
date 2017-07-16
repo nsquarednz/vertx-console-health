@@ -8,7 +8,8 @@
     width: 100%;
     height: 100%;
 
-    .node circle {
+    .node text {
+        font-family: Menlo, Monaco, Consolas, monospace;
     }
 
     .link {
@@ -80,7 +81,7 @@ export default {
                 .style("fill", d => d.status === 'UP' ? COLOR_GREEN : COLOR_RED);
 
             nodeEnter.append("text")
-                .attr("x", d => d.children ? -13 : 13)
+                .attr("x", d => d.children ? -16 : 16)
                 .attr("dy", ".35em")
                 .attr("text-anchor", d => d.children ? "end" : "start")
                 .text(d => d.id)
