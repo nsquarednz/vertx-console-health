@@ -78,7 +78,7 @@ export default {
                 return;
             }
             this.lastDataString = dataAsString;
-            const rootElement = Object.assign({}, JSON.parse(dataAsString));
+            const rootElement = JSON.parse(dataAsString);
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
             this.rootElement = rootElement;
             if (!this.disableDraw) {
