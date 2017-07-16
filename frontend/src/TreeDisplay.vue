@@ -14,7 +14,7 @@
 
     .link {
         fill: none;
-        stroke: #ccc;
+        stroke: #d1d1d1;
         stroke-width: 2px;
     }
 }
