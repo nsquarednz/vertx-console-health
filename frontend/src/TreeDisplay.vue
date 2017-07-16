@@ -50,6 +50,8 @@ export default {
             const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
 
+            const leftMargin = 50;
+
             let i = 0;
             // Compute the new tree layout.
             var nodes = tree.nodes(rootElement).reverse(),
@@ -65,7 +67,7 @@ export default {
             // Enter the nodes.
             var nodeEnter = node.enter().append("g")
                 .attr("class", "node")
-                .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
+                .attr("transform", d => "translate(" + (d.y + leftMargin) + "," + d.x + ")");
 
             nodeEnter.append("circle")
                 .attr("r", 10)
@@ -85,6 +87,7 @@ export default {
             // Enter the links.
             link.enter().insert("path", "g")
                 .attr("class", "link")
+                .attr("transform", d => "translate(" + leftMargin + ")")
                 .attr("d", diagonal);
         }
     }
