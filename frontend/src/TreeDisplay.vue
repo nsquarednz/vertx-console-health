@@ -95,18 +95,18 @@ export default {
 
             let i = 0;
             // Compute the new tree layout.
-            var nodes = tree.nodes(rootElement).reverse(),
+            const nodes = tree.nodes(rootElement).reverse(),
                 links = tree.links(nodes);
 
             // Normalize for fixed-depth.
             nodes.forEach(d => d.y = d.depth * 120);
 
             // Declare the nodes…
-            var node = treeSvg.selectAll("g.node")
+            const node = treeSvg.selectAll("g.node")
                 .data(nodes, d => d.uid || (d.uid = ++i));
 
             // Enter the nodes.
-            var nodeEnter = node.enter().append("g")
+            const nodeEnter = node.enter().append("g")
                 .attr("class", "node")
                 .attr("transform", d => "translate(" + (d.y + leftMargin) + "," + d.x + ")");
 
@@ -123,7 +123,7 @@ export default {
                 .style("fill-opacity", 1);
 
             // Declare the links…
-            var link = treeSvg.selectAll("path.link")
+            const link = treeSvg.selectAll("path.link")
                 .data(links, d => d.target.uid);
 
             // Enter the links.
