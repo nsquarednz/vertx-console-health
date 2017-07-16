@@ -55,6 +55,21 @@ export default {
     directives: {
         resize
     },
+    beforeMount() {
+        this.disableDraw = false;
+        this.visibilityFn = () => {
+            if (document.hidden) {
+                this.disableDraw = true;
+            } else {
+                this.disableDraw = false;
+                this.drawTree();
+            }
+        };
+        document.addEventListener('visibilitychange', this.visibilityFn, false);
+    },
+    beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.visibilityFn, false);
+    },
     watch: {
         treeData(val) {
             const dataAsString = JSON.stringify(this.treeData);
@@ -65,7 +80,9 @@ export default {
             const rootElement = Object.assign({}, JSON.parse(dataAsString));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
             this.rootElement = rootElement;
-            this.drawTree();
+            if (!this.disableDraw) {
+                this.drawTree();
+            }
         }
     },
     methods: {
@@ -95,31 +112,23 @@ export default {
             const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 16).attr("height", 16).attr("x", -3);
             dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 1).attr("flood-opacity", 0.3);
 
-            // Styling props
             const leftMargin = 50;
 
             let i = 0;
-            // Compute the new tree layout.
             const nodes = tree.nodes(this.rootElement).reverse(),
                 links = tree.links(nodes);
-
-            // Normalize for fixed-depth.
             nodes.forEach(d => d.y = d.depth * 120);
 
-            // Declare the nodes…
             const node = treeSvg.selectAll("g.node")
                 .data(nodes, d => d.uid || (d.uid = ++i));
 
-            // Enter the nodes.
             const nodeEnter = node.enter().append("g")
                 .attr("class", "node")
                 .attr("transform", d => "translate(" + (d.y + leftMargin) + "," + d.x + ")");
-
             nodeEnter.append("circle")
                 .attr("r", 10)
                 .style("fill", d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)')
                 .style("stroke", d => d.status === 'UP' ? greenStroke : redStroke);
-
             nodeEnter.append("text")
                 .attr("x", d => d.children ? -16 : 16)
                 .attr("dy", ".35em")
@@ -127,11 +136,8 @@ export default {
                 .text(d => d.id)
                 .style("fill-opacity", 1);
 
-            // Declare the links…
             const link = treeSvg.selectAll("path.link")
                 .data(links, d => d.target.uid);
-
-            // Enter the links.
             link.enter().insert("path", "g")
                 .attr("class", "link")
                 .attr("transform", d => "translate(" + leftMargin + ")")
