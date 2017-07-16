@@ -2,26 +2,23 @@
 .health-container {
     width: 100%;
     height: 100%;
+    padding-bottom: 20px;
 
     display: -webkit-box;
-
     display: -ms-flexbox;
-
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-
-    overflow: hidden;
-
-    padding-bottom: 20px;
 }
 
 .tree-display {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
+
+    overflow: hidden;
 }
 </style>
 
