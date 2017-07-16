@@ -12,9 +12,14 @@
         font-family: Menlo, Monaco, Consolas, monospace;
     }
 
+    .node circle {
+        stroke-width: 1px;
+        filter:url(#shadow);
+    }
+
     .link {
         fill: none;
-        stroke: #d1d1d1;
+        stroke: #d8d8d8;
         stroke-width: 2px;
     }
 }
@@ -76,6 +81,11 @@ export default {
             setGradientStops(redGradient, "#c00", "#a30000");
             const greenGradient = defs.append("linearGradient").attr("id", "greenGradient");
             setGradientStops(greenGradient, "#6ec664", "#3f9c35");
+            const redStroke = "#8b0000";
+            const greenStroke = "#37892f";
+
+            const dropShadowFilter = defs.append("filter").attr("id", "shadow").attr("width", 18).attr("height", 18).attr("x", -5);
+            dropShadowFilter.append("feDropShadow").attr("dx", 0).attr("dy", 2).attr("stdDeviation", 2).attr("flood-opacity", 0.33);
 
             const rootElement = Object.assign({}, JSON.parse(JSON.stringify(this.treeData)));
             d3.layout.hierarchy().children(d => d.checks)(rootElement);
@@ -102,7 +112,8 @@ export default {
 
             nodeEnter.append("circle")
                 .attr("r", 10)
-                .style("fill", d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)');
+                .style("fill", d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)')
+                .style("stroke", d => d.status === 'UP' ? greenStroke : redStroke);
 
             nodeEnter.append("text")
                 .attr("x", d => d.children ? -16 : 16)
