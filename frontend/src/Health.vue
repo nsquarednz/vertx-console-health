@@ -12,13 +12,16 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+
+    overflow: hidden;
+
+    padding-bottom: 20px;
 }
 
 .tree-display {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    margin-bottom: 20px;
 }
 </style>
 
