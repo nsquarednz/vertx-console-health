@@ -27,8 +27,6 @@
 </style>
 
 <script>
-import resize from 'vue-resize-directive';
-
 function setGradientStops(gradient, start, end) {
     gradient
         .attr('x1', '0%')
@@ -52,9 +50,6 @@ function setGradientStops(gradient, start, end) {
 export default {
     props: {
         treeData: Object
-    },
-    directives: {
-        resize
     },
     beforeMount() {
         this.disableDraw = false;
