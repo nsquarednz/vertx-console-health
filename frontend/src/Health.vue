@@ -61,10 +61,11 @@ export default {
             })
             .then(healthJson => {
                 healthJson.id = 'root';
+                healthJson.status = healthJson.outcome;
                 this.healthChecks = healthJson;
             });
         updateStatuses();
-        this.updateTask = setInterval(updateStatuses, 100000);
+        this.updateTask = setInterval(updateStatuses, 1000);
     },
     beforeDestroy() {
         clearInterval(this.updateTask);

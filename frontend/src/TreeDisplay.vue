@@ -83,7 +83,7 @@ export default {
                 .attr("x", d => d.children || d._children ? -13 : 13)
                 .attr("dy", ".35em")
                 .attr("text-anchor", d => d.children || d._children ? "end" : "start")
-                .text(d => d.id)
+                .text(d => d.id + ": " + d.status)
                 .style("fill-opacity", 1);
 
             // Declare the links…
