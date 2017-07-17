@@ -53,6 +53,7 @@ $tooltip-bg: #393f44;
     content: "\25BE";
     position: absolute;
     text-align: center;
+    pointer-events: none;
 }
 
 .health-tree-tip.n:after {
