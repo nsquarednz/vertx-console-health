@@ -25,32 +25,39 @@
     }
 }
 
-    .health-tree-tip {
-        line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.8);
+.health-tree-tip {
+    max-width: 220px;
+    color: #fff;
+    background-color: #393f44;
+    border-radius: 1px;
+    padding: 7px 12px;
+    transition: opacity 0.2s;
+
+    code {
+        background: transparent;
+        white-space: pre;
         color: #fff;
-        border-radius: 2px;
+        padding: 0;
     }
-    /* Creates a small triangle extender for the tooltip */
-    .health-tree-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 10px;
-        width: 100%;
-        line-height: 1;
-        color: rgba(0, 0, 0, 0.8);
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
-    }
-    /* Style northward tooltips differently */
-    .health-tree-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
-    }
+}
+
+.health-tree-tip:after {
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 24px;
+    width: 100%;
+    line-height: 1;
+    color: #393f44;
+    content: "\25BE";
+    position: absolute;
+    text-align: center;
+}
+
+.health-tree-tip.n:after {
+    margin: -10px 0 0 0;
+    top: 100%;
+    left: 0;
+}
 </style>
 
 <script>
@@ -134,7 +141,7 @@ export default {
                 this.tip = d3.tip()
                     .attr('class', 'health-tree-tip')
                     .offset([-10, 0])
-                    .html(d => '<code>' + JSON.stringify(d.data || {}) + '</code>');
+                    .html(d => '<code>' + JSON.stringify(d.data || {}, null, 4) + '</code>');
                 treeSvg.call(this.tip);
             } else {
                 treeSvg.selectAll('.redraw').remove();
