@@ -1,5 +1,5 @@
 <template>
-    <div class="health-tree-container" v-resize:throttle="drawTree">
+    <div class="health-tree-container" v-resize:throttle="onResize">
     </div>
 </template>
 
@@ -25,10 +25,12 @@
     }
 }
 
+$tooltip-bg: #393f44;
+
 .health-tree-tip {
     max-width: 220px;
     color: #fff;
-    background-color: #393f44;
+    background-color: $tooltip-bg;
     border-radius: 1px;
     padding: 7px 12px;
     transition: opacity 0.2s;
@@ -47,7 +49,7 @@
     font-size: 24px;
     width: 100%;
     line-height: 1;
-    color: #393f44;
+    color: $tooltip-bg;
     content: "\25BE";
     position: absolute;
     text-align: center;
@@ -116,6 +118,10 @@ export default {
         }
     },
     methods: {
+        onResize() {
+            this.tip.hide();
+            this.drawTree();
+        },
         drawTree() {
             const container = this.$el;
             const sel = d3.select(container);
