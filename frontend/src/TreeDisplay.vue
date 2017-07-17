@@ -122,8 +122,8 @@ export default {
     },
     methods: {
         onResize() {
-            this.tip.hide();
             this.drawTree();
+            this.tip.hide();
         },
         drawTree() {
             const container = this.$el;
