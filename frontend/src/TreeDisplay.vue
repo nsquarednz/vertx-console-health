@@ -24,6 +24,33 @@
         stroke-width: 2px;
     }
 }
+
+    .health-tree-tip {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+    /* Creates a small triangle extender for the tooltip */
+    .health-tree-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+    }
+    /* Style northward tooltips differently */
+    .health-tree-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
 </style>
 
 <script>
@@ -102,6 +129,13 @@ export default {
 
                 const dropShadowFilter = defs.append('filter').attr('id', 'shadow').attr('width', 16).attr('height', 16).attr('x', -3);
                 dropShadowFilter.append('feDropShadow').attr('dx', 0).attr('dy', 2).attr('stdDeviation', 1).attr('flood-opacity', 0.3);
+
+                // Persist tip object across updates
+                this.tip = d3.tip()
+                    .attr('class', 'health-tree-tip')
+                    .offset([-10, 0])
+                    .html(d => '<code>' + JSON.stringify(d.data || {}) + '</code>');
+                treeSvg.call(this.tip);
             } else {
                 treeSvg.selectAll('.redraw').remove();
             }
@@ -123,7 +157,9 @@ export default {
                 .attr('r', 10)
                 .style('fill', d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)')
                 .style('stroke', d => d.status === 'UP' ? '#37892f' : '#8b0000')
-                .on('click', d => console.log(d));
+                .on('click', d => console.log(d))
+                .on('mouseover', this.tip.show)
+                .on('mouseout', this.tip.hide);
             nodeEnter.append('text')
                 .attr('x', d => d.children ? -16 : 16)
                 .attr('dy', '.35em')
