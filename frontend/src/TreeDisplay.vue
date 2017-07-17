@@ -158,13 +158,12 @@ export default {
 
             const leftMargin = 50;
 
-            let i = 0;
             const nodes = tree.nodes(this.treeRoot).reverse(),
                 links = tree.links(nodes);
             nodes.forEach(d => d.y = d.depth * 120);
 
             const node = treeSvg.selectAll('g.node')
-                .data(nodes, d => d.uid || (d.uid = ++i));
+                .data(nodes, d => d.address);
 
             const nodeEnter = node.enter().append('g')
                 .attr('class', 'node redraw')
@@ -183,7 +182,7 @@ export default {
                 .style('fill-opacity', 1);
 
             const link = treeSvg.selectAll('path.link')
-                .data(links, d => d.target.uid);
+                .data(links, d => d.target.address);
             link.enter().insert('path', 'g')
                 .attr('class', 'link redraw')
                 .attr('transform', d => 'translate(' + leftMargin + ')')

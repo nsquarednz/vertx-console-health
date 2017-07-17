@@ -59,6 +59,17 @@ export default {
             .then(healthJson => {
                 healthJson.id = 'root';
                 healthJson.status = healthJson.outcome;
+
+                function setAddress(parent, node) {
+                    node.address = parent ? parent.address + '/' + node.id : node.id;
+                    if (node.checks) {
+                        for (let checkObj of node.checks) {
+                            setAddress(node, checkObj);
+                        }
+                    }
+                }
+
+                setAddress(null, healthJson);
                 this.healthChecks = healthJson;
             });
         updateStatuses();
