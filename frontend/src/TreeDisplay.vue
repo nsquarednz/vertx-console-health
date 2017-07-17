@@ -126,6 +126,10 @@ export default {
             this.tip.hide();
         },
         drawTree() {
+            if (!this.treeRoot) {
+                return;
+            }
+
             const container = this.$el;
             const sel = d3.select(container);
             const width = container.clientWidth, height = container.clientHeight;
