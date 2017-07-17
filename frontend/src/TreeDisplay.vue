@@ -115,6 +115,9 @@ export default {
             this.treeRoot = rootElement;
             if (!this.disableDraw) {
                 this.drawTree();
+
+                // No way to refresh tooltips
+                // See https://github.com/Caged/d3-tip/issues/203
             }
         }
     },
