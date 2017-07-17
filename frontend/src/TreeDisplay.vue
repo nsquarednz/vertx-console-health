@@ -28,7 +28,6 @@
 $tooltip-bg: #393f44;
 
 .health-tree-tip {
-    max-width: 220px;
     color: #fff;
     background-color: $tooltip-bg;
     border-radius: 1px;
@@ -174,7 +173,6 @@ export default {
                 .attr('r', 10)
                 .style('fill', d => d.status === 'UP' ? 'url(#greenGradient)' : 'url(#redGradient)')
                 .style('stroke', d => d.status === 'UP' ? '#37892f' : '#8b0000')
-                .on('click', d => console.log(d))
                 .on('mouseover', this.tip.show)
                 .on('mouseout', this.tip.hide);
             nodeEnter.append('text')
