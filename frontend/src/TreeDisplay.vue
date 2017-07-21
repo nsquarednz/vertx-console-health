@@ -37,8 +37,23 @@ $tooltip-bg: #393f44;
     code {
         background: transparent;
         white-space: pre;
-        color: #fff;
         padding: 0;
+    }
+
+    .json-markup {
+        color: #888;
+    }
+
+    .json-markup-key {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .json-markup-bool,
+    .json-markup-string,
+    .json-markup-null,
+    .json-markup-number {
+        color: #d8d8d8;
     }
 }
 
@@ -63,6 +78,8 @@ $tooltip-bg: #393f44;
 </style>
 
 <script>
+import jsonMarkup from 'json-markup';
+
 function setGradientStops(gradient, start, end) {
     gradient
         .attr('x1', '0%')
@@ -154,7 +171,7 @@ export default {
                 this.tip = d3.tip()
                     .attr('class', 'health-tree-tip')
                     .offset([-10, 0])
-                    .html(d => '<code>' + JSON.stringify(d.data || {}, null, 4) + '</code>');
+                    .html(d => '<code>' + jsonMarkup(d.data || {}) + '</code>');
                 treeSvg.call(this.tip);
             } else {
                 treeSvg.selectAll('.redraw').remove();
