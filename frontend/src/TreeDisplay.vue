@@ -118,6 +118,7 @@ export default {
     },
     beforeDestroy() {
         document.removeEventListener('visibilitychange', this.visibilityFn, false);
+        this.tip.hide();
     },
     watch: {
         treeData(val) {
