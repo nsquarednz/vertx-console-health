@@ -115,10 +115,14 @@ export default {
             }
         };
         document.addEventListener('visibilitychange', this.visibilityFn, false);
+        this.tip = d3.tip()
+            .attr('class', 'health-tree-tip')
+            .offset([-10, 0])
+            .html(d => '<code>' + jsonMarkup(d.data || {}) + '</code>');
     },
     beforeDestroy() {
         document.removeEventListener('visibilitychange', this.visibilityFn, false);
-        this.tip.hide();
+        this.tip.destroy();
     },
     watch: {
         treeData(val) {
@@ -168,11 +172,6 @@ export default {
                 const dropShadowFilter = defs.append('filter').attr('id', 'shadow').attr('width', 16).attr('height', 16).attr('x', -3);
                 dropShadowFilter.append('feDropShadow').attr('dx', 0).attr('dy', 2).attr('stdDeviation', 1).attr('flood-opacity', 0.3);
 
-                // Persist tip object across updates
-                this.tip = d3.tip()
-                    .attr('class', 'health-tree-tip')
-                    .offset([-10, 0])
-                    .html(d => '<code>' + jsonMarkup(d.data || {}) + '</code>');
                 treeSvg.call(this.tip);
             } else {
                 treeSvg.selectAll('.redraw').remove();
