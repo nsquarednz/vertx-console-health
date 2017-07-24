@@ -48,14 +48,9 @@ export default {
         /* Chrome will log errors no matter what: 
            https://stackoverflow.com/questions/21990036/prevent-google-chrome-log-xmlhttprequest
         */
-        const updateStatuses = () => this.$http.get(window.location.pathname + '/healthchecks')
-            .then(response => response.json(), errResponse => {
-                if (errResponse.status === 500 || errResponse.status === 503) {
-                    return JSON.parse(errResponse.bodyText)
-                } else {
-                    throw 'Failed to retrieve health checks: ' + errResponse.statusText
-                }
-            })
+        const updateStatuses = () => this.$http.get(window.location.pathname + '/healthchecks',
+            { validateStatus: status => (status >= 200 && status < 300) || status === 500 || status === 503 })
+            .then(response => response.data)
             .then(healthJson => {
                 healthJson.id = 'root';
                 healthJson.status = healthJson.outcome;
