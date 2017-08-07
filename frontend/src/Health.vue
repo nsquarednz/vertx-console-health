@@ -33,6 +33,9 @@
 
 <script>
 import TreeDisplay from './TreeDisplay.vue';
+import HealthStatus from './healthstatus.js';
+
+let initialized = false;
 
 export default {
     name: 'Health Checks',
@@ -45,33 +48,15 @@ export default {
         }
     },
     beforeMount() {
-        /* Chrome will log errors no matter what: 
-           https://stackoverflow.com/questions/21990036/prevent-google-chrome-log-xmlhttprequest
-        */
-        const updateStatuses = () => this.$http.get(window.location.pathname + '/healthchecks',
-            { validateStatus: status => (status >= 200 && status < 300) || status === 500 || status === 503 })
-            .then(response => response.data)
-            .then(healthJson => {
-                healthJson.id = 'root';
-                healthJson.status = healthJson.outcome;
-
-                function setAddress(parent, node) {
-                    node.address = parent ? parent.address + '/' + node.id : node.id;
-                    if (node.checks) {
-                        for (let checkObj of node.checks) {
-                            setAddress(node, checkObj);
-                        }
-                    }
-                }
-
-                setAddress(null, healthJson);
-                this.healthChecks = healthJson;
-            });
-        updateStatuses();
-        this.updateTask = setInterval(updateStatuses, 1000);
+        if (!initialized) {
+            HealthStatus.initialize('/healthchecks');
+            initialized = true;
+        }
+        this.healthCallback = healthJson => this.healthChecks = healthJson;
+        HealthStatus.addCallback(this.healthCallback);
     },
     beforeDestroy() {
-        clearInterval(this.updateTask);
+        HealthStatus.removeCallback(this.healthCallback);
     }
 }
 </script>
