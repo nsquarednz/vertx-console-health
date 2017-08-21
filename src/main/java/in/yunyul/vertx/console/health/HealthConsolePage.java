@@ -10,11 +10,17 @@ import io.vertx.ext.web.Router;
 public class HealthConsolePage implements ConsolePage {
     private final HealthChecks healthChecks;
 
+    /**
+     * Creates the health console page, using the provided health checks
+     *
+     * @param healthChecks the health checks to retrieve data from
+     * @return the console page
+     */
     public static HealthConsolePage create(HealthChecks healthChecks) {
         return new HealthConsolePage(healthChecks);
     }
 
-    public HealthConsolePage(HealthChecks healthChecks) {
+    private HealthConsolePage(HealthChecks healthChecks) {
         this.healthChecks = healthChecks;
     }
 
